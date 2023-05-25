@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WGUI ~ Add user</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragments/menu :: menu}"></div>
+<div th:replace="~{fragments/alert :: alert}"></div>
+<div class="container mt-5">
+    <h3 class="mb-4">Add new user</h3>
+    <form th:object="${user}" th:action="@{/users}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control form-control-sm" id="name" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control form-control-sm" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control form-control-sm" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <select class="form-select form-select-sm" id="role" name="role" required>
+                <option th:each="role : ${roles}"
+                        th:value="${role}"
+                        th:text="${role}">
+            </select>
+        </div>
+        <div class="mb-3">
+            <div class="form-check form-switch">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Enabled</label>
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="enabled">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Add User</button>
+    </form>
+</div>
+</body>
+</html>
+

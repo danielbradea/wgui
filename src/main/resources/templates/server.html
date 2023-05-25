@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WGUI ~ Server settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragments/menu :: menu}"></div>
+<div th:replace="~{fragments/alert :: alert}"></div>
+<div class="container mt-5">
+    <h3 class="mb-4">WireGuard Server Settings</h3>
+    <form th:action="@{/server}" method="post">
+        <div class="mb-3">
+            <label for="address" class="form-label">Address:</label>
+            <input type="text" class="form-control form-control-sm" id="address" name="address" aria-describedby="addressDesc"
+                   th:value="${server.address}">
+            <div id="addressDesc" class="form-text">Enter the server address (IP address or domain name).</div>
+        </div>
+        <div class="mb-3">
+            <label for="listenPort" class="form-label">Listen Port:</label>
+            <input type="number" class="form-control form-control-sm" id="listenPort" name="listenPort" aria-describedby="listenPortDesc"
+                   th:value="${server.listenPort}">
+            <div id="listenPortDesc" class="form-text">Enter the port number on which the server listens for connections.</div>
+        </div>
+        <div class="mb-3">
+            <label for="postUp" class="form-label">Post Up:</label>
+            <input type="text" class="form-control form-control-sm" id="postUp" name="postUp" aria-describedby="postUpDesc"
+                   th:value="${server.postUp}">
+            <div id="postUpDesc" class="form-text">Enter the post-up command or action.</div>
+        </div>
+        <div class="mb-3">
+            <label for="postDown" class="form-label">Post Down:</label>
+            <input type="text" class="form-control form-control-sm" id="postDown" name="postDown" aria-describedby="postDownDesc"
+                   th:value="${server.postDown}">
+            <div id="postDownDesc" class="form-text">Enter the post-down command or action.</div>
+        </div>
+        <div class="mb-3">
+            <label for="preUp" class="form-label">Pre Up:</label>
+            <input type="text" class="form-control form-control-sm" id="preUp" name="preUp" aria-describedby="preUpDesc"
+                   th:value="${server.preUp}">
+            <div id="preUpDesc" class="form-text">Enter the pre-up command or action.</div>
+        </div>
+        <div class="mb-3">
+            <label for="preDown" class="form-label">Pre Down:</label>
+            <input type="text" class="form-control form-control-sm" id="preDown" name="preDown" aria-describedby="preDownDesc"
+                   th:value="${server.preDown}">
+            <div id="preDownDesc" class="form-text">Enter the pre-down command or action.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WGUI ~ Clients</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div th:replace="~{fragments/menu :: menu}"></div>
+<div th:replace="~{fragments/alert :: alert}"></div>
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 d-flex justify-content-evenly">
+
+        <div class="col mb-4" th:if="${#lists.isEmpty(clients)}">
+
+            <h5>No clients found.</h5>
+
+        </div>
+
+        <div class="col mb-4" th:each="c : ${clients}">
+            <div class="card" style="width: 20rem;">
+                <div class="card-header" th:text="${c.name}">
+
+                </div>
+                <img class="card-img-top" th:id="@{id-{id}(id=${c.id})}" src="/images/blur-qrcode.png" alt="Front Image"
+                     th:data-image="@{/client/{id}/qrcode(id=${c.id})}">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" >Address: <span th:text="${c.address}"></span></li>
+                    <li class="list-group-item" >AllowedIPs: <span th:text="${c.allowedIPs}"></span></li>
+                </ul>
+                <div class="card-footer text-center">
+
+                    <button class="btn btn-primary btn-sm"
+                            id="left" style="color:white"
+
+                            th:onclick="@{changeImage('id-{id}')(id=${c.id})}">
+                        &#128065;
+                    </button>
+                    <a class="btn btn-secondary btn-sm" th:href="@{/client/{id}/file(id=${c.id})}">Download</a>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    function changeImage(id){
+    const image = document.getElementById(id);
+    const src = image.src;
+    const data = image.dataset.image
+        console.log(src)
+        image.src = data;
+        image.dataset.image = src;
+
+    }
+</script>
+</body>
+</html>

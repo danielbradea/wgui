@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WGUI ~ General settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragments/menu :: menu}"></div>
+<div th:replace="~{fragments/alert :: alert}"></div>
+<div class="container mt-5">
+    <h3 class="mb-4">WireGuard Global Settings</h3>
+    <form th:action="@{/settings}" method="post">
+        <div class="mb-3">
+            <label for="endpoint" class="form-label">Endpoint</label>
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control " id="endpoint" name="endpointAddress"
+                       th:value="${settings.endpointAddress}"
+                       aria-describedby="button-publicIp">
+                <button class="btn btn-outline-secondary" type="button" id="button-publicIp"
+                        th:data-publicIp="${publicIP}"
+                        onclick="changeValue(this,'endpoint')">Public Ip
+                </button>
+            </div>
+            <div class="form-text">The public IP address or domain name of the Wireguard server.</div>
+        </div>
+        <div class="mb-3">
+            <label for="dns" class="form-label">DNS</label>
+            <input type="text" class="form-control form-control-sm" id="dns" name="dnsServers" th:value="${settings.dnsServers}">
+            <div class="form-text">The DNS server IP address used by the VPN clients.</div>
+        </div>
+        <div class="mb-3">
+            <label for="mtu" class="form-label">MTU</label>
+            <input type="number" class="form-control form-control-sm" id="mtu" name="mtu" th:value="${settings.mtu}">
+            <div class="form-text">The Maximum Transmission Unit (MTU) size for the VPN tunnel.</div>
+        </div>
+        <div class="mb-3">
+            <label for="keepalive" class="form-label">KeepAlive</label>
+            <input type="number" class="form-control form-control-sm" id="keepalive" name="persistentKeepAlive"
+                   th:value="${settings.persistentKeepAlive}">
+            <div class="form-text">The time interval in seconds between keepAlive messages sent by the VPN clients.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="fwMark" class="form-label">Firewall Mark</label>
+            <input type="text" class="form-control form-control-sm" id="fwMark" name="fwMark"
+                   th:value="${settings.fwMark}">
+            <div class="form-text">The firewall mark value for packet filtering rules.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+    </form>
+</div>
+<script>
+  function changeValue(button, inputId) {
+  var publicIP = button.getAttribute('data-publicIp');
+  document.getElementById(inputId).value = publicIP;
+}
+
+
+
+</script>
+</body>
+</html>

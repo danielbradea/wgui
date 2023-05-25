@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WGUI ~ Server Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragments/menu :: menu}"></div>
+<div th:replace="~{fragments/alert :: alert}"></div>
+<div class="container mt-5">
+    <h3 class="mb-4">Server Settings</h3>
+    <form th:action="@{/settings/server}" method="post">
+        <div class="mb-3">
+            <label for="serverInterfaceAddresses" class="form-label">Interface Addresses</label>
+            <input type="text" class="form-control" id="serverInterfaceAddresses" name="serverInterfaceAddresses"
+                   th:value="${settings.serverInterfaceAddresses}">
+            <div class="form-text">The interface addresses represent the IP addresses assigned to the WireGuard VPN
+                server.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="listenPort" class="form-label">Listen Port</label>
+            <input type="number" class="form-control" id="listenPort" name="listenPort" th:value="${settings.listenPort}">
+            <div class="form-text">The listen port is the network port that the WireGuard VPN server will use to accept
+                incoming connections.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="postUpScript" class="form-label">Post Up</label>
+            <input type="test" class="form-control" id="postUpScript" name="postUpScript"
+                   th:value="${settings.postUpScript}">
+            <div class="form-text">The post up script is a script or command that is executed on the WireGuard VPN
+                server after a client successfully establishes a connection.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="postDownScript" class="form-label">Post Down</label>
+            <input type="test" class="form-control" id="postDownScript" name="postDownScript"
+                   th:value="${settings.postDownScript}">
+            <div class="form-text">The post down script is a script or command that is executed on the WireGuard VPN
+                server after a client connection is closed or terminated.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="preUpScript" class="form-label">Pre Up</label>
+            <input type="test" class="form-control" id="preUpScript" name="preUpScript"
+                   th:value="${settings.preUpScript}">
+            <div class="form-text">The pre up script is a script or command that is executed on the WireGuard VPN server
+                before a client establishes a connection.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="preDownScript" class="form-label">Pre Down</label>
+            <input type="test" class="form-control" id="preDownScript" name="preDownScript"
+                   th:value="${settings.preDownScript}">
+            <div class="form-text">The pre down script is a script or command that is executed on the WireGuard VPN
+                server before a client connection is closed or terminated.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+    </form>
+</div>
+</body>
+</html>

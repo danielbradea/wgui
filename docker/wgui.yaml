@@ -1,0 +1,47 @@
+version: '3'
+
+networks:
+  wireguard:
+    driver: bridge
+
+volumes:
+  wgui_data:
+    driver: local
+
+services:
+  wgui:
+    image: wgui:latest
+    cap_add:
+      # Add capabilities to the container
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      # Enable the sysctl settings for the container
+      - net.ipv4.conf.all.src_valid_mark=1
+    ports:
+      - 8080:8080
+      - 51820:51820/udp
+    networks:
+      - wireguard
+    volumes:
+      - wgui_data:/app/data
+    environment:
+      # Database Configuration
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/wgdb;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=
+      # Hibernate Configuration
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      # Admin Credentials
+      - ADMIN_EMAIL=admin@admin.com
+      - ADMIN_PASSWORD=admin
+      # WireGuard Configuration
+      - WGC_ENDPOINT_ADDRESS=localhost
+      - WGC_ADDRESS=10.13.13.1
+      - WGC_DNS_SERVERS=
+      - WGC_MTU=1450
+      - WGC_PERSISTENT_KEEP_ALIVE=14
+      - WGC_FW_MARK=0xca6c
+      - WGC_LISTEN_PORT=51820
+      - WGC_POST_UP='iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth+ -j MASQUERADE'
+      - WGC_POST_DOWN='iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth+ -j MASQUERADE'
