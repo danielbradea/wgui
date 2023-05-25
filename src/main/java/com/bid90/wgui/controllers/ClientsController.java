@@ -93,7 +93,6 @@ public class ClientsController {
         clientService.save(client);
         if (client.getEnabled()) {
             actionsService.updateWgConfFile();
-            actionsService.updateWgConfFile();
             actionsService.updateWgServer();
         }
         redirectAttributes.addFlashAttribute("notificationMessage", "Client added successfully.");
