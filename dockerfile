@@ -1,7 +1,7 @@
  FROM alpine:latest
 
 # Install required packages
-RUN apk add --no-cache wireguard-tools openjdk17
+RUN apk add --no-cache wireguard-tools openjdk17 iptables
 
 # Set environment variables
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm
