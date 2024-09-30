@@ -1,4 +1,4 @@
-FROM alpine:latest
+ FROM alpine:latest
 
 # Install required packages
 RUN apk add --no-cache wireguard-tools openjdk17
@@ -26,8 +26,8 @@ ENV WGC_MTU=1450
 ENV WGC_PERSISTENT_KEEP_ALIVE=14
 ENV WGC_FW_MARK=0xca6c
 ENV WGC_LISTEN_PORT=51820
-ENV WGC_POST_UP=iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth+ -j MASQUERADE
-ENV WGC_POST_DOWN=iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth+ -j MASQUERADE
+ENV WGC_POST_UP=
+ENV WGC_POST_DOWN=
 ENV WGC_PRE_UP=
 ENV WGC_PRE_DOWN=
 
