@@ -7,10 +7,12 @@ networks:
 volumes:
   wgui_data:
     driver: local
+  wg_data:
+    driver: local
 
 services:
   wgui:
-    image: wgui:latest
+    image: ghcr.io/danielbradea/bid90/wgui:v8
     cap_add:
       # Add capabilities to the container
       - NET_ADMIN
@@ -25,23 +27,24 @@ services:
       - wireguard
     volumes:
       - wgui_data:/app/data
+      - wg_data:/etc/wireguard
     environment:
       # Database Configuration
       - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/wgdb;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
       - SPRING_DATASOURCE_USERNAME=sa
       - SPRING_DATASOURCE_PASSWORD=
       # Hibernate Configuration
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       # Admin Credentials
       - ADMIN_EMAIL=admin@admin.com
       - ADMIN_PASSWORD=admin
       # WireGuard Configuration
-      - WGC_ENDPOINT_ADDRESS=localhost
+      - WGC_ENDPOINT_ADDRESS=bid90.go.ro
       - WGC_ADDRESS=10.13.13.1
       - WGC_DNS_SERVERS=
       - WGC_MTU=1450
       - WGC_PERSISTENT_KEEP_ALIVE=14
       - WGC_FW_MARK=0xca6c
       - WGC_LISTEN_PORT=51820
-      - WGC_POST_UP='iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth+ -j MASQUERADE'
-      - WGC_POST_DOWN='iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth+ -j MASQUERADE'
+      - WGC_POST_UP=iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; iptables -I FORWARD -d 192.168.1.1/24 -m iprange --dst-range 192.168.1.1-192.168.1.225 -j DROP
+      - WGC_POST_DOWN=iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; iptables -D FORWARD -d 192.168.1.1/24 -m iprange --dst-range 192.168.1.1-192.168.1.225 -j DROP

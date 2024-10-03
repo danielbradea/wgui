@@ -2,6 +2,7 @@ package com.bid90.wgui;
 
 import com.bid90.wgui.models.*;
 import com.bid90.wgui.models.dto.AddUserDTO;
+import com.bid90.wgui.services.ActionsService;
 import com.bid90.wgui.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,16 +16,18 @@ public class ServerInitializer implements ApplicationRunner {
     private final UserService userService;
     private final String adminEmail;
     private final String adminPassword;
+    private final ActionsService actionsService;
 
 
     @Autowired
     public ServerInitializer(UserService userService,
                              @Value("${admin.email}") String adminEmail,
-                             @Value("${admin.password}") String adminPassword) {
+                             @Value("${admin.password}") String adminPassword, ActionsService actionsService) {
         this.userService = userService;
 
         this.adminEmail = adminEmail;
         this.adminPassword = adminPassword;
+        this.actionsService = actionsService;
     }
 
     /**
@@ -46,5 +49,7 @@ public class ServerInitializer implements ApplicationRunner {
             userDTO.setEnabled(true);
             userService.addUser(userDTO);
         }
+
+        actionsService.wgQuickUp();
     }
 }
